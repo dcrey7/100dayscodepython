@@ -27,7 +27,7 @@ def computer_toss():
 '''
 toss: this function gets the winner of the toss, it also decides the number of overs to be played
 the players gets to choose between heads or tails and the other choice is assigned to the computer.
-if the player wins the toss, he can choose between batting or bowling
+if the player wins the toss, the player can choose between batting or bowling
 if the computer wins the toss, it chooses between batting or bowling
 '''        
     
