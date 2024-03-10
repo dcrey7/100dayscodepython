@@ -1,11 +1,18 @@
 import random 
-
+'''
+player_computer number: this function generates a number for the computer and asks the user for
+a input from 0 to 6 
+'''
 
 def player_computer_number():
     player_number=int(input("Choose a number from 0 to 6 : "))
     computer_number=random.randint(0, 6)
     return player_number,computer_number
-    
+
+'''
+computer_toss: this function makes the computer choose between batting or bowling and assigns the 
+player with the other choice available
+'''    
 def computer_toss():
     player_toss_choice=''
     choice=['bat','bowl']
@@ -16,7 +23,13 @@ def computer_toss():
         player_toss_choice='bat'
     return computer_toss_choice,player_toss_choice
   
-    
+
+'''
+toss: this function gets the winner of the toss, it also decides the number of overs to be played
+the players gets to choose between heads or tails and the other choice is assigned to the computer.
+if the player wins the toss, he can choose between batting or bowling
+if the computer wins the toss, it chooses between batting or bowling
+'''        
     
 def toss():
     player_toss_choice=''
@@ -43,6 +56,12 @@ def toss():
         print(f"Computer won toss because it put {computer_number}. Computer chooses to {computer_toss_choice} \n")
     return computer_toss_choice,player_toss_choice,overs
         
+'''
+innings: There are 2 innings played, the first inning gets over when the all the overs are played or
+when the batter is out. After the first over a target score is created which the next batter has to chase.
+The game ends when the second inning ends which happens until all the overs are played, the batter gets out,
+the target score is achieved by the batter.
+'''      
         
 def innings(innings_no=1,computer_toss_choice='',player_toss_choice='',target_score=0,overs=1):
     for i in range(1,3):
@@ -119,14 +138,18 @@ def innings(innings_no=1,computer_toss_choice='',player_toss_choice='',target_sc
                         break
                     print(f"Computer put: {computer_number},balls left: {balls}, total score: {final_score}")
                     
-            
-                
-computer_toss_choice,player_toss_choice,overs=toss()
-innings(1,computer_toss_choice,player_toss_choice,0,overs)
+ 
+'''
+play: this function helps to play a game of odd or even cricket between the user and the computer
+'''                  
+def play_oddoreven():
+                    
+    computer_toss_choice,player_toss_choice,overs=toss()
+    innings(1,computer_toss_choice,player_toss_choice,0,overs)
             
         
         
-    
+play_oddoreven()    
         
         
         
