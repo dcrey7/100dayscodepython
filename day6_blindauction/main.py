@@ -1,6 +1,6 @@
 import os
 
-from art import logo
+from day8_blackjack.art import logo
 
 print(logo)
 
