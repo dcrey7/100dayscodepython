@@ -27,13 +27,15 @@ class Scoreboard(Turtle):
         self.r_score += 1
         self.update_scoreboard()
         
-    def update_winner(self,point):
-        if self.r_point==point:
-            self.goto(0, 0)
-            self.write("Red wins", align="center", font=("Courier", 80, "normal"))
-            return False
-        if self.l_point==point:
-            self.goto(0, 0)
-            self.write("Blue wins", align="center", font=("Courier", 80, "normal"))
-            return False
+    def left_winner_scoreboard(self):
+        self.clear()
+        self.goto(0, 0)
+        self.pencolor('blue')
+        self.write("Blue wins", align="center", font=("Courier", 80, "normal"))
+        
+    def right_winner_scoreboard(self):
+        self.clear()
+        self.goto(0, 0)
+        self.pencolor('green')
+        self.write("Green wins", align="center", font=("Courier", 80, "normal"))
             

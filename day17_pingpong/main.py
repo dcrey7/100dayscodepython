@@ -8,7 +8,7 @@ screen = Screen()
 screen.bgcolor("black")
 screen.setup(width=800, height=600)
 screen.title("Pong")
-screen.tracer(0)
+screen.tracer(1)
 
 r_paddle = Paddle((350, 0,),"green")
 l_paddle = Paddle((-350, 0),"blue")
@@ -22,7 +22,9 @@ screen.onkey(r_paddle.go_down, "Down")
 screen.onkey(l_paddle.go_up, "w")
 screen.onkey(l_paddle.go_down, "s")
 
-# point=10
+#first 2 reach 5 points wins the game
+point=5
+
 game_is_on = True
 while game_is_on:
     screen.update()
@@ -47,6 +49,15 @@ while game_is_on:
         scoreboard.r_point()
     
         
-    # game_is_on=scoreboard.update_winner(point)   
+    # left winner
+    if scoreboard.l_score==point:
+        scoreboard.left_winner_scoreboard()
+        game_is_on=False
+    
+    #right winner    
+    if scoreboard.r_score==point:
+        scoreboard.right_winner_scoreboard()
+        game_is_on=False
+          
 
 screen.exitonclick()
