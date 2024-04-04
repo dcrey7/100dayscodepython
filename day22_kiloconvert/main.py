@@ -2,7 +2,7 @@ from tkinter import *
 
 
 def button_clicked():
-    print("I got clicked")
+    print("smd smd smd macha")
     new_text = input.get()
     my_label.config(text=new_text)
 
