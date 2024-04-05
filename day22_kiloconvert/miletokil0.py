@@ -7,6 +7,7 @@ def milestokm():
     
 window=Tk()
 window.title("miles to km converter")
+window.minsize(width=100, height=100)
 window.config(padx=20,pady=20)
 
 miles_input=Entry(width=7)
