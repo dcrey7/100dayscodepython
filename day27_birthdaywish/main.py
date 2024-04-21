@@ -5,9 +5,15 @@ from datetime import datetime
 import pandas
 import random
 import smtplib
+import os
 
-MY_EMAIL = "abhishek01789"
-MY_PASSWORD = "YOUR PASSWORD"
+#env in bash to see all environment variables
+#saved the email key in environment in pythonanywhere
+#export ABHIMAIL=""   -- syntax in bash
+MY_EMAIL = os.environ.get("ABHIMAIL")
+#saved the app key in environment in pythonanywhere
+#export APPKEY="" --syntax in bash
+MY_PASSWORD = os.environ.get("APPKEY")
 
 today = datetime.now()
 today_tuple = (today.month, today.day)
@@ -21,11 +27,11 @@ if today_tuple in birthdays_dict:
         contents = letter_file.read()
         contents = contents.replace("[NAME]", birthday_person["name"])
 
-    with smtplib.SMTP("YOUR EMAIL PROVIDER SMTP SERVER ADDRESS") as connection:
+    with smtplib.SMTP("smtp.gmail.com") as connection:
         connection.starttls()
         connection.login(MY_EMAIL, MY_PASSWORD)
         connection.sendmail(
             from_addr=MY_EMAIL,
             to_addrs=birthday_person["email"],
-            msg=f"Subject:Happy Birthday!\n\n{contents}"
+            msg=f"Subject:Happy Birthday!\n\n{contents} "
         )
