@@ -15,9 +15,7 @@ NEWS_API_KEY = "YOUR OWN API KEY FROM NEWSAPI"
 TWILIO_SID = "YOUR TWILIO ACCOUNT SID"
 TWILIO_AUTH_TOKEN = "YOUR TWILIO AUTH TOKEN"
 
-## STEP 1: Use https://www.alphavantage.co/documentation/#daily
-# When stock price increase/decreases by 5% between yesterday and the day before yesterday then print("Get News").
-
+## checking day30 branch v1
 #Get yesterday's closing stock price
 stock_params = {
     "function": "TIME_SERIES_DAILY",
