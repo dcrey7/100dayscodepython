@@ -1,3 +1,4 @@
+
 from tkinter import *
 import pandas
 import random
@@ -128,3 +129,5 @@ print(f"Total time taken to complete the quiz: {round((total_time/60),2):.2f} se
     
 
 
+
+# %%
