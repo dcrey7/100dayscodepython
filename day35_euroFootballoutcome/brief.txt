@@ -10,6 +10,7 @@ Datasets
 - https://theanalyst.com/eu/2023/11/uefa-europa-league-stats-hub-opta?_gl=1*uisgy5*_ga*NTE0NzE1MjMwLjE3MTU3NzQ2Mzk.*_ga_BGFPTYQE1X*MTcxNTc3NDYzOS4xLjEuMTcxNTc3NDkxOS41Ny4wLjA
 - https://www.uefa.com/nationalassociations/uefarankings/country/?year=2024
 - https://www.uefa.com/nationalassociations/uefarankings/country/seasons/?year=2024
+- https://en.wikipedia.org/wiki/UEFA_Euro_2024_squads
 
 youtube links
 -https://www.youtube.com/watch?v=jYj4AOS2u9c&list=PLMp52FesfEMmPQAt7JDNdjAHZMgx8Mmb6
