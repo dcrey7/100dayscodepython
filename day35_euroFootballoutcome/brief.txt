@@ -19,3 +19,8 @@ youtube links
 -https://www.youtube.com/watch?v=c7tmj33lbY4&list=PLMp52FesfEMmPQAt7JDNdjAHZMgx8Mmb6&index=5
 
 
+notebooks
+- https://www.kaggle.com/code/sslp23/predicting-fifa-2022-world-cup-with-ml
+- https://github.com/thepycoach/fifa-world-cup-2022-prediction
+
+
