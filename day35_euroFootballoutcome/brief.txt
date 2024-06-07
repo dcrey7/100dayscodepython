@@ -23,5 +23,9 @@ youtube links
 notebooks
 - https://www.kaggle.com/code/sslp23/predicting-fifa-2022-world-cup-with-ml
 - https://github.com/thepycoach/fifa-world-cup-2022-prediction
-
+- https://www.kaggle.com/code/jonathanbouchet/another-world-cup-2018-predictions-kernel#final-results
+- https://www.kaggle.com/code/jamesnrobertson/predicting-euro-2024
+- https://www.kaggle.com/code/tiagosalvador/predicting-game-scores-fifa-2022-world-cup
+- https://www.kaggle.com/code/scottsuk0306/fifa-world-cup-2022-group-stage-prediction
+- 
 
