@@ -12,6 +12,7 @@ Datasets
 - https://www.uefa.com/nationalassociations/uefarankings/country/seasons/?year=2024
 - https://en.wikipedia.org/wiki/UEFA_Euro_2024_squads
 
+
 youtube links
 -https://www.youtube.com/watch?v=jYj4AOS2u9c&list=PLMp52FesfEMmPQAt7JDNdjAHZMgx8Mmb6
 -https://www.youtube.com/watch?v=anEoBZkZRHA&list=PLMp52FesfEMmPQAt7JDNdjAHZMgx8Mmb6&index=2
@@ -27,5 +28,5 @@ notebooks
 - https://www.kaggle.com/code/jamesnrobertson/predicting-euro-2024
 - https://www.kaggle.com/code/tiagosalvador/predicting-game-scores-fifa-2022-world-cup
 - https://www.kaggle.com/code/scottsuk0306/fifa-world-cup-2022-group-stage-prediction
-- 
+- https://www.kaggle.com/code/robertostl/2024-euro-prediction-using-poisson-distribution#ELO-Ranking-System
 
