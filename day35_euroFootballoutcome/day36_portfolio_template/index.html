@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scrollable WebGL Visualizer with Feature Carousel</title>
+    <!-- External libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body, html { margin: 0; padding: 0; overflow-x: hidden; }
+        #webgl-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
+        #content-container { 
+            position: relative; 
+            z-index: 1; 
+            padding-top: 80px;
+        }
+        .page { 
+            min-height: 100vh; 
+            width: 100vw; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+        }
+        #logo { 
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+            z-index: 10;
+            width: 700px;
+        }
+        #logo.top-left { 
+            top: 40px;
+            left: 40px;
+            transform: translate(0, 0) scale(0.2);
+            transform-origin: top left;
+        }
+        #logo img { 
+            width: 100%;
+            height: auto;
+        }
+        #feature-carousel-container { 
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            width: 100%;
+            padding: 2rem;
+            color: white;
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .tile {
+            background-color: rgba(64, 64, 64, 0.5);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        .tile:hover {
+            transform: scale(1.05);
+        }
+        #mode-toggle { 
+            position: fixed; 
+            top: 30px; 
+            right: 30px; 
+            z-index: 10; 
+            cursor: pointer;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #mode-title { 
+            color: white; 
+            font-size: 50px;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .transition-opacity {
+            transition-property: opacity;
+        }
+        .duration-500 {
+            transition-duration: 500ms;
+        }
+    </style>
+</head>
+<body>
+    <div id="webgl-container"></div>
+    <div id="logo">
+        <img src="IMG-2699_final.png" alt="DCR Logo">
+    </div>
+    <div id="content-container">
+        <div class="page">
+            <div id="feature-carousel-container"></div>
+        </div>
+    </div>
+    <div id="mode-toggle">
+        <span id="mode-title">☀️</span>
+    </div>
+
+    <script type="text/babel">
+        // React components and WebGL code will go here in Part 2
+// React Components
+		// React Components
+const FeatureTile = ({ icon, title, isGlass, className }) => (
+    <div className={`tile p-3 shadow-md flex flex-col items-center justify-center text-white ${isGlass ? 'glass-effect' : ''} ${className}`}>
+        <div className="text-3xl mb-2">{icon}</div>
+        <span className="text-xs text-center">{title}</span>
+    </div>
+);
+
+const CarouselPage = ({ title, features }) => (
+    <div className="w-full">
+        <h2 className="text-4xl font-bold text-white mb-6 text-center">{title}</h2>
+        <div className="grid grid-cols-6 gap-4 max-w-6xl mx-auto">
+            {features.map((feature, index) => (
+                <FeatureTile key={index} {...feature} />
+            ))}
+        </div>
+    </div>
+);
+
+const FeatureCarousel = () => {
+    const [currentPage, setCurrentPage] = React.useState(0);
+    const [isTransitioning, setIsTransitioning] = React.useState(false);
+
+    const pages = [
+        {
+            title: "Overview",
+            features: [
+                { icon: "📱", title: "Flat Sided Design", className: "col-span-2 row-span-2" },
+                { icon: "🎙️", title: "Apple Podcasts" },
+                { icon: "💓", title: "Heartbeat Sensor", className: "col-span-2" },
+				{icon: "📱", title: "Flat Sided Design", className: "row-span-2" },
+                { icon: "🎨", title: "Brand new Colours", className: "col-span-2" },
+                { icon: "🗺️", title: "Apple Maps" },
+                { icon: "Pay", title: "Apple Pay", className: "col-span-2" },
+                { icon: "📱", title: "iPhone", className: "col-span-2 row-span-2" },
+                { icon: "4K", title: "4K 60 fps Camera" },
+                { icon: "5G", title: "5G" },
+                { icon: "⚡", title: "Fast Charging" },
+                { icon: "🖥️", title: "Powerful Chip" },
+                { icon: "🔋", title: "All day Battery" },
+                { icon: "📶", title: "Wi-Fi 6" },
+                { icon: "🗣️", title: "Improved Siri", className: "col-span-2" },
+                { icon: "🚴", title: "Tracks Workout" },
+                { icon: "🎵", title: "Apple Music" },
+				{ icon: "🗣️", title: "Improved Siri", className: "col-span-2" }
+            ]
+        },
+        // Add other pages here (Performance, Camera System) with their respective features
+		{
+            title: "Performance",
+            features: [
+                { icon: "📱", title: "Flat Sided Design", className: "col-span-2 row-span-2" },
+                { icon: "🎙️", title: "Apple Podcasts" },
+                { icon: "💓", title: "Heartbeat Sensor", className: "col-span-2" },
+				{icon: "📱", title: "Flat Sided Design", className: "row-span-2" },
+                { icon: "🎨", title: "Brand new Colours", className: "col-span-2" },
+                { icon: "🗺️", title: "Apple Maps" },
+                { icon: "Pay", title: "Apple Pay", className: "col-span-2" },
+                { icon: "📱", title: "iPhone", className: "col-span-2 row-span-2" },
+                { icon: "4K", title: "4K 60 fps Camera" },
+                { icon: "5G", title: "5G" },
+                { icon: "⚡", title: "Fast Charging" },
+                { icon: "🖥️", title: "Powerful Chip" },
+                { icon: "🔋", title: "All day Battery" },
+                { icon: "📶", title: "Wi-Fi 6" },
+                { icon: "🗣️", title: "Improved Siri", className: "col-span-2" },
+                { icon: "🚴", title: "Tracks Workout" },
+                { icon: "🎵", title: "Apple Music" },
+				{ icon: "🗣️", title: "Improved Siri", className: "col-span-2" }
+            ]
+        },
+		{
+            title: "Camera",
+            features: [
+                { icon: "📱", title: "Flat Sided Design", className: "col-span-2 row-span-2" },
+                { icon: "🎙️", title: "Apple Podcasts" },
+                { icon: "💓", title: "Heartbeat Sensor", className: "col-span-2" },
+				{icon: "📱", title: "Flat Sided Design", className: "row-span-2" },
+                { icon: "🎨", title: "Brand new Colours", className: "col-span-2" },
+                { icon: "🗺️", title: "Apple Maps" },
+                { icon: "Pay", title: "Apple Pay", className: "col-span-2" },
+                { icon: "📱", title: "iPhone", className: "col-span-2 row-span-2" },
+                { icon: "4K", title: "4K 60 fps Camera" },
+                { icon: "5G", title: "5G" },
+                { icon: "⚡", title: "Fast Charging" },
+                { icon: "🖥️", title: "Powerful Chip" },
+                { icon: "🔋", title: "All day Battery" },
+                { icon: "📶", title: "Wi-Fi 6" },
+                { icon: "🗣️", title: "Improved Siri", className: "col-span-2" },
+                { icon: "🚴", title: "Tracks Workout" },
+                { icon: "🎵", title: "Apple Music" },
+				{ icon: "🗣️", title: "Improved Siri", className: "col-span-2" }
+            ]
+        },
+    ];
+
+    const nextPage = () => {
+        if (!isTransitioning) {
+            setIsTransitioning(true);
+            setTimeout(() => {
+                setCurrentPage((prev) => (prev + 1) % pages.length);
+                setIsTransitioning(false);
+            }, 500);
+        }
+    };
+
+    const prevPage = () => {
+        if (!isTransitioning) {
+            setIsTransitioning(true);
+            setTimeout(() => {
+                setCurrentPage((prev) => (prev - 1 + pages.length) % pages.length);
+                setIsTransitioning(false);
+            }, 500);
+        }
+    };
+
+    return (
+        <div className="relative">
+            <div className={`transition-opacity duration-500 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
+                <CarouselPage {...pages[currentPage]} />
+            </div>
+            <button onClick={prevPage} className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-20 p-2 rounded-full" disabled={isTransitioning}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            </button>
+            <button onClick={nextPage} className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-20 p-2 rounded-full" disabled={isTransitioning}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
+            <div className="flex justify-center mt-4">
+                {pages.map((_, index) => (
+                    <button
+                        key={index}
+                        onClick={() => !isTransitioning && setCurrentPage(index)}
+                        className={`h-3 w-3 rounded-full mx-1 ${index === currentPage ? 'bg-white' : 'bg-gray-400'}`}
+                        disabled={isTransitioning}
+                    />
+                ))}
+            </div>
+        </div>
+    );
+};
+
+// Render the React component
+ReactDOM.render(<FeatureCarousel />, document.getElementById('feature-carousel-container'));
+
+// WebGL Visualizer code remains the same
+// ... (keep the existing WebGL code here)
+
+		// WebGL Visualizer
+		let scene, camera, renderer, material, plane;
+		let mouseX = 0, mouseY = 0;
+		let targetMouseX = 0, targetMouseY = 0;
+		const lerpFactor = 0.1;
+		let isLightMode = false;
+		let transitionFactor = 0;
+		let currentColor1 = new THREE.Vector3(0.0, 0.15, 0.4);
+		let currentColor2 = new THREE.Vector3(0.2, 0.4, 0.8);
+		let targetColor1 = new THREE.Vector3(0.0, 0.15, 0.4);
+		let targetColor2 = new THREE.Vector3(0.2, 0.4, 0.8);
+
+		function init() {
+			scene = new THREE.Scene();
+			camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10);
+			camera.position.z = 1;
+
+			renderer = new THREE.WebGLRenderer({ antialias: true });
+			renderer.setSize(window.innerWidth, window.innerHeight);
+			document.getElementById('webgl-container').appendChild(renderer.domElement);
+
+			const geometry = new THREE.PlaneGeometry(2, 2);
+			const fragmentShader = `
+				uniform float time;
+				uniform vec2 resolution;
+				uniform vec2 mouse;
+				uniform float transitionFactor;
+				uniform vec3 color1;
+				uniform vec3 color2;
+
+				#define FLOW_INTENSITY 0.05
+
+				void main() {
+					vec2 uv = gl_FragCoord.xy / resolution.xy;
+					vec2 p = (uv * 2.0 - 1.0);
+					vec2 m = (mouse / resolution.xy) * 2.0 - 1.0;
+					
+					vec2 flowVector = m - p;
+					float dist = length(flowVector);
+					
+					vec2 offset = flowVector * FLOW_INTENSITY / (dist + 0.5);
+					p += offset;
+
+					for(int i = 1; i < 7; i++) {
+						float fi = float(i);
+						p.x += 0.1 / fi * sin(fi * 2.0 * p.y + time * 0.25 + 0.2 * fi);
+						p.y += 0.1 / fi * cos(fi * 2.0 * p.x + time * 0.25 + 0.2 * fi);
+					}
+					
+					float intensity = 0.5 * sin(3.0 * p.x + 2.0 * p.y) + 0.5;
+					vec3 darkColor = mix(vec3(0.0), color1, intensity);
+					vec3 lightColor = mix(color1, color2, intensity);
+					vec3 color = mix(darkColor, lightColor, transitionFactor);
+					
+					gl_FragColor = vec4(color, 1.0);
+				}
+			`;
+
+			material = new THREE.ShaderMaterial({
+				uniforms: {
+					time: { value: 1.0 },
+					resolution: { value: new THREE.Vector2() },
+					mouse: { value: new THREE.Vector2() },
+					transitionFactor: { value: 0.0 },
+					color1: { value: currentColor1 },
+					color2: { value: currentColor2 }
+				},
+				fragmentShader: fragmentShader
+			});
+
+			plane = new THREE.Mesh(geometry, material);
+			scene.add(plane);
+
+			window.addEventListener('resize', onWindowResize, false);
+			document.addEventListener('mousemove', onMouseMove, false);
+			window.addEventListener('scroll', onScroll, false);
+			document.addEventListener('click', changeColors, false);
+
+			const modeToggle = document.getElementById('mode-toggle');
+			const modeTitle = document.getElementById('mode-title');
+			modeToggle.addEventListener('click', function() {
+				isLightMode = !isLightMode;
+				modeTitle.style.opacity = 0;
+				setTimeout(() => {
+					modeTitle.textContent = isLightMode ? '🌑' : '☀️';
+					modeTitle.style.opacity = 1;
+				}, 150);
+			});
+
+			onWindowResize();
+			setInterval(changeColors, 5000);
+		}
+
+		function changeColors() {
+			targetColor1 = new THREE.Vector3(Math.random(), Math.random(), Math.random());
+			targetColor2 = new THREE.Vector3(Math.random(), Math.random(), Math.random());
+		}
+
+		function onWindowResize() {
+			const width = window.innerWidth;
+			const height = window.innerHeight;
+
+			camera.aspect = width / height;
+			camera.updateProjectionMatrix();
+
+			renderer.setSize(width, height);
+			material.uniforms.resolution.value.x = width;
+			material.uniforms.resolution.value.y = height;
+		}
+
+		function onMouseMove(event) {
+			targetMouseX = event.clientX;
+			targetMouseY = event.clientY;
+		}
+
+		function onScroll() {
+			const scrollY = window.scrollY || window.pageYOffset;
+			const logo = document.getElementById('logo');
+			const featureCarousel = document.getElementById('feature-carousel-container');
+			
+			const scrollThreshold = 10; // Adjust this value to control when the logo moves to the top left
+			
+			if (scrollY > scrollThreshold) {
+				logo.classList.add('top-left');
+				featureCarousel.style.opacity = '1';
+			} else {
+				logo.classList.remove('top-left');
+				featureCarousel.style.opacity = '0';
+			}
+		}
+
+		function lerp(start, end, t) {
+			return start * (1 - t) + end * t;
+		}
+
+		function lerpVector(start, end, t) {
+			return new THREE.Vector3(
+				lerp(start.x, end.x, t),
+				lerp(start.y, end.y, t),
+				lerp(start.z, end.z, t)
+			);
+		}
+
+		function animate() {
+			requestAnimationFrame(animate);
+
+			mouseX = lerp(mouseX, targetMouseX, lerpFactor);
+			mouseY = lerp(mouseY, targetMouseY, lerpFactor);
+
+			const targetTransitionFactor = isLightMode ? 1.0 : 0.0;
+			transitionFactor = lerp(transitionFactor, targetTransitionFactor, 0.05);
+
+			currentColor1 = lerpVector(currentColor1, targetColor1, 0.05);
+			currentColor2 = lerpVector(currentColor2, targetColor2, 0.05);
+
+			material.uniforms.time.value += 0.025;
+			material.uniforms.mouse.value.x = mouseX;
+			material.uniforms.mouse.value.y = window.innerHeight - mouseY;
+			material.uniforms.transitionFactor.value = transitionFactor;
+			material.uniforms.color1.value = currentColor1;
+			material.uniforms.color2.value = currentColor2;
+
+			renderer.render(scene, camera);
+		}
+
+		init();
+		animate();
+    </script>
+</body>
+</html>
